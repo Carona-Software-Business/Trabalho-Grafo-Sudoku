@@ -9,6 +9,8 @@ public class Tabuleiro {
     private String caminho = "inst1.txt";
 
     private int[][] tabuleiro = new int[9][9];
+    
+    private Grafo grafo;
 
     public Tabuleiro() {
         try (BufferedReader br = new BufferedReader(new FileReader(caminho))) {
@@ -33,5 +35,11 @@ public class Tabuleiro {
             }
             System.out.println();
         }
+        
+        this.grafo = new Grafo(tabuleiro);
+    }
+
+    public Grafo getGrafo() {
+        return grafo;
     }
 }
