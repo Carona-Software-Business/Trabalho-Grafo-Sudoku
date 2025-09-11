@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.Random;
 
 public class Tabuleiro {
 
@@ -52,11 +53,29 @@ public class Tabuleiro {
     }
     
     private Vertice escolherVertice(Grafo g) {
+        Random rand = new Random();
+        int numeroInt = rand.nextInt(g.getVertices().size());
+        Vertice v = g.getVertices().get(numeroInt);
+        if(v.getNum() == -1){
+            return v;
+        }else{
+            for(Vertice u : v.getAdj()){
+                if(u.getNum() == -1){
+                    return u;
+                }
+            }
+            for(Vertice u: g.getVertices()){
+                if(u.getNum() == -1){
+                    return u;
+                }
+            }
+        }
         return null;
     }
     
     private int escolherNumero(Vertice v) {
         int num = 1;
+<<<<<<< Updated upstream
         
         while(num < 9) {
             for(Vertice u : v.getAdj()) {
