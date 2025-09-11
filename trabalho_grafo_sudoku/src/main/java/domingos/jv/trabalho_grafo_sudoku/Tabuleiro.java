@@ -4,6 +4,10 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayDeque;
+<<<<<<< Updated upstream
+=======
+import java.util.Deque;
+>>>>>>> Stashed changes
 
 public class Tabuleiro {
 
@@ -13,8 +17,12 @@ public class Tabuleiro {
     
     private Grafo grafo;
     private Grafo grafoOriginal;
+<<<<<<< Updated upstream
     
     private ArrayDeque<Vertice> fila;
+=======
+    private Deque<Vertice> pilha;
+>>>>>>> Stashed changes
 
     public Tabuleiro() {
         try (BufferedReader br = new BufferedReader(new FileReader(caminho))) {
@@ -42,8 +50,12 @@ public class Tabuleiro {
         
         this.grafo = new Grafo(tabuleiro);
         this.grafoOriginal = new Grafo(tabuleiro);
+<<<<<<< Updated upstream
         
         fila = new ArrayDeque<>();
+=======
+        this.pilha = new ArrayDeque<>();
+>>>>>>> Stashed changes
     }
 
     public Grafo getGrafo() {
@@ -90,7 +102,29 @@ public class Tabuleiro {
         return null;
     }
     
-    public Grafo buscaProfundidade(Grafo g, int maxInteracao) {
+    public Grafo buscaProfundidade(int maxInteracao) {
+        for(int i = 1; i <= maxInteracao; i++){
+            Vertice no = escolherVertice();
+            escolherNumero(no);
+            pilha.push(no);
+            
+            while(!pilha.isEmpty()){
+                Vertice v = pilha.pop();
+                
+                for(Vertice w : v.getAdj()){
+                    if (w.getNum() == -1){
+                       escolherNumero(w);
+                       pilha.push(v);
+                       pilha.push(w);                    
+                    } 
+                }
+            }
+            if(ehValido()){
+                return grafo;
+            }else{
+                reinicializar();
+            }
+        }
         return null;
     }
 }
