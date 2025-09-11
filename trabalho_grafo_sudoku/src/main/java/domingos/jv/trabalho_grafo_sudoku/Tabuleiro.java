@@ -73,15 +73,21 @@ public class Tabuleiro {
     }
     
     private int escolherNumero(Vertice v) {
-        int num = 1;      
-        while(num < 9) {
+        int num = 1;   
+        boolean quebra = false;
+        
+        while(num <= 9) {
             for(Vertice u : v.getAdj()) {
                 if(u.getNum() == num) {
                     num++;
+                    quebra = true;
                     break;
                 }
             }
-            return num;
+            if(!quebra)
+                return num;
+            
+            quebra = false;
         }       
         return -1;
     }
