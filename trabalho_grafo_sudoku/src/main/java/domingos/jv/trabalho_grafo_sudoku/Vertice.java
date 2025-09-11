@@ -41,5 +41,9 @@ public class Vertice {
     public ArrayList<Vertice> getAdj() {
         return adj;
     }
+
+    public int getNum() {
+        return num;
+    }
     
 }
