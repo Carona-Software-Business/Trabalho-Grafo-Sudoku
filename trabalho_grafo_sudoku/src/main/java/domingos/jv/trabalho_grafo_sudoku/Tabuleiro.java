@@ -4,10 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayDeque;
-<<<<<<< Updated upstream
-=======
 import java.util.Deque;
->>>>>>> Stashed changes
 
 public class Tabuleiro {
 
@@ -17,12 +14,9 @@ public class Tabuleiro {
     
     private Grafo grafo;
     private Grafo grafoOriginal;
-<<<<<<< Updated upstream
     
     private ArrayDeque<Vertice> fila;
-=======
     private Deque<Vertice> pilha;
->>>>>>> Stashed changes
 
     public Tabuleiro() {
         try (BufferedReader br = new BufferedReader(new FileReader(caminho))) {
@@ -50,12 +44,9 @@ public class Tabuleiro {
         
         this.grafo = new Grafo(tabuleiro);
         this.grafoOriginal = new Grafo(tabuleiro);
-<<<<<<< Updated upstream
         
         fila = new ArrayDeque<>();
-=======
         this.pilha = new ArrayDeque<>();
->>>>>>> Stashed changes
     }
 
     public Grafo getGrafo() {
