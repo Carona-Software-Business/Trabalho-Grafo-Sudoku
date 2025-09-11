@@ -58,7 +58,14 @@ public class Tabuleiro {
     private int escolherNumero(Vertice v) {
         int num = 1;
         
-        
+        while(num < 9) {
+            for(Vertice u : v.getAdj()) {
+                if(u.getNum() == num) {
+                    num++;
+                    break;
+                } else return num;
+            }
+        }
         
         return -1;
     }
@@ -73,13 +80,13 @@ public class Tabuleiro {
             
             Vertice no = escolherVertice(grafoRetorno);
             fila.add(no);
-            escolherNumero(no);
+            no.setNum(escolherNumero(no));
             
             while(!fila.isEmpty()) {
                 Vertice v = fila.remove();
                 for(Vertice w : v.getAdj()) {
                     if(w.getNum() == -1) {
-                        escolherNumero(w);
+                        w.setNum(escolherNumero(w));
                         fila.add(w);
                     }
                 }
@@ -98,7 +105,7 @@ public class Tabuleiro {
             Grafo grafoRetorno = new Grafo(tabuleiro);
             
             Vertice no = escolherVertice(grafoRetorno);
-            escolherNumero(no);
+            no.setNum(escolherNumero(no));
             pilha.push(no);
             
             while(!pilha.isEmpty()){
@@ -106,7 +113,7 @@ public class Tabuleiro {
                 
                 for(Vertice w : v.getAdj()){
                     if (w.getNum() == -1){
-                       escolherNumero(w);
+                       w.setNum(escolherNumero(w));
                        pilha.push(v);
                        pilha.push(w);                    
                     } 
