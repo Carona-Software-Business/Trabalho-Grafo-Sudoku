@@ -37,6 +37,9 @@ public class Vertice {
         
         return "Vertice: " + num + " - Adj: " + adj;
     }
-    
+
+    public ArrayList<Vertice> getAdj() {
+        return adj;
+    }
     
 }
