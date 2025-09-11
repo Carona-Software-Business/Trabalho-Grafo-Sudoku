@@ -74,9 +74,7 @@ public class Tabuleiro {
     }
     
     private int escolherNumero(Vertice v) {
-        int num = 1;
-<<<<<<< Updated upstream
-        
+        int num = 1;      
         while(num < 9) {
             for(Vertice u : v.getAdj()) {
                 if(u.getNum() == num) {
@@ -84,8 +82,7 @@ public class Tabuleiro {
                     break;
                 } else return num;
             }
-        }
-        
+        }       
         return -1;
     }
     
