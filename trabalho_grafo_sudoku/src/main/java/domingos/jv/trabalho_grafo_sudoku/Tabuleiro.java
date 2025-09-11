@@ -79,7 +79,7 @@ public class Tabuleiro {
                 if(u.getNum() == num) {
                     num++;
                     break;
-                };
+                }
             }
             return num;
         }       
