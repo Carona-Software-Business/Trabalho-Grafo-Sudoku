@@ -13,7 +13,6 @@ public class Tabuleiro {
     private int[][] tabuleiro = new int[9][9];
     
     private Grafo grafo;
-    private Grafo grafoOriginal;
     
     private ArrayDeque<Vertice> fila;
     private Deque<Vertice> pilha;
@@ -43,7 +42,6 @@ public class Tabuleiro {
         }
         
         this.grafo = new Grafo(tabuleiro);
-        this.grafoOriginal = new Grafo(tabuleiro);
         
         fila = new ArrayDeque<>();
         this.pilha = new ArrayDeque<>();
@@ -53,11 +51,15 @@ public class Tabuleiro {
         return grafo;
     }
     
-    private Vertice escolherVertice() {
+    private Vertice escolherVertice(Grafo g) {
         return null;
     }
     
     private int escolherNumero(Vertice v) {
+        int num = 1;
+        
+        
+        
         return -1;
     }
     
@@ -65,13 +67,11 @@ public class Tabuleiro {
         return false;
     }
     
-    private void reinicializar() {
-        
-    }
-    
     public Grafo buscaLargura(int maxInteracao) {
         for(int i = 1; i <= maxInteracao; i++) {
-            Vertice no = escolherVertice();
+            Grafo grafoRetorno = new Grafo(tabuleiro);
+            
+            Vertice no = escolherVertice(grafoRetorno);
             fila.add(no);
             escolherNumero(no);
             
@@ -85,9 +85,9 @@ public class Tabuleiro {
                 }
             }
             
-            if(ehValido()) return grafo;
+            if(ehValido()) return grafoRetorno;
             
-            reinicializar();
+            fila.clear();
         }
         
         return null;
@@ -95,7 +95,9 @@ public class Tabuleiro {
     
     public Grafo buscaProfundidade(int maxInteracao) {
         for(int i = 1; i <= maxInteracao; i++){
-            Vertice no = escolherVertice();
+            Grafo grafoRetorno = new Grafo(tabuleiro);
+            
+            Vertice no = escolherVertice(grafoRetorno);
             escolherNumero(no);
             pilha.push(no);
             
@@ -110,11 +112,10 @@ public class Tabuleiro {
                     } 
                 }
             }
-            if(ehValido()){
-                return grafo;
-            }else{
-                reinicializar();
-            }
+            
+            if(ehValido()) return grafoRetorno;
+            
+            pilha.clear();
         }
         return null;
     }
