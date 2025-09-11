@@ -73,6 +73,10 @@ public class Grafo {
         
         return retorno;
     }
+
+    public ArrayList<Vertice> getVertices() {
+        return vertices;
+    }
     
     
 }
