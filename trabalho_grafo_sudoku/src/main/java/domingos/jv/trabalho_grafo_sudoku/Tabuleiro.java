@@ -3,6 +3,7 @@ package domingos.jv.trabalho_grafo_sudoku;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayDeque;
 
 public class Tabuleiro {
 
@@ -12,6 +13,8 @@ public class Tabuleiro {
     
     private Grafo grafo;
     private Grafo grafoOriginal;
+    
+    private ArrayDeque<Vertice> fila;
 
     public Tabuleiro() {
         try (BufferedReader br = new BufferedReader(new FileReader(caminho))) {
@@ -39,6 +42,8 @@ public class Tabuleiro {
         
         this.grafo = new Grafo(tabuleiro);
         this.grafoOriginal = new Grafo(tabuleiro);
+        
+        fila = new ArrayDeque<>();
     }
 
     public Grafo getGrafo() {
@@ -61,7 +66,27 @@ public class Tabuleiro {
         
     }
     
-    public Grafo buscaLargura(Grafo g, int maxInteracao) {
+    public Grafo buscaLargura(int maxInteracao) {
+        for(int i = 1; i <= maxInteracao; i++) {
+            Vertice no = escolherVertice();
+            fila.add(no);
+            escolherNumero(no);
+            
+            while(!fila.isEmpty()) {
+                Vertice v = fila.remove();
+                for(Vertice w : v.getAdj()) {
+                    if(w.getNum() == -1) {
+                        escolherNumero(w);
+                        fila.add(w);
+                    }
+                }
+            }
+            
+            if(ehValido()) return grafo;
+            
+            reinicializar();
+        }
+        
         return null;
     }
     
