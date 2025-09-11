@@ -11,6 +11,7 @@ public class Tabuleiro {
     private int[][] tabuleiro = new int[9][9];
     
     private Grafo grafo;
+    private Grafo grafoOriginal;
 
     public Tabuleiro() {
         try (BufferedReader br = new BufferedReader(new FileReader(caminho))) {
@@ -37,9 +38,34 @@ public class Tabuleiro {
         }
         
         this.grafo = new Grafo(tabuleiro);
+        this.grafoOriginal = new Grafo(tabuleiro);
     }
 
     public Grafo getGrafo() {
         return grafo;
+    }
+    
+    private Vertice escolherVertice() {
+        return null;
+    }
+    
+    private int escolherNumero(Vertice v) {
+        return -1;
+    }
+    
+    private boolean ehValido() {
+        return false;
+    }
+    
+    private void reinicializar() {
+        
+    }
+    
+    public Grafo buscaLargura(Grafo g, int maxInteracao) {
+        return null;
+    }
+    
+    public Grafo buscaProfundidade(Grafo g, int maxInteracao) {
+        return null;
     }
 }
