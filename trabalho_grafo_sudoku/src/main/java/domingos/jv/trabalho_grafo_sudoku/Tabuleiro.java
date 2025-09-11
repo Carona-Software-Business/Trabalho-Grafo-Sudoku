@@ -105,8 +105,10 @@ public class Tabuleiro {
     }
     
     public Grafo buscaLargura(long maxInteracao) {
+        Grafo grafoRetorno;
+        
         for(long i = 1L; i <= maxInteracao; i++) {
-            Grafo grafoRetorno = new Grafo(tabuleiro);
+            grafoRetorno = new Grafo(tabuleiro);
             
             Vertice no = escolherVertice(grafoRetorno);
             fila.add(no);
@@ -131,8 +133,10 @@ public class Tabuleiro {
     }
     
     public Grafo buscaProfundidade(long maxInteracao) {
+        Grafo grafoRetorno;
+        
         for(long i = 1L; i <= maxInteracao; i++){
-            Grafo grafoRetorno = new Grafo(tabuleiro);
+            grafoRetorno = new Grafo(tabuleiro);
             
             Vertice no = escolherVertice(grafoRetorno);
             no.setNum(escolherNumero(no));
