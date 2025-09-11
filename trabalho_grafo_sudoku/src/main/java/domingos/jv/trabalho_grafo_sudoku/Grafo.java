@@ -49,7 +49,7 @@ public class Grafo {
                 
                 // Quadrante
                 int qi = (i / 3) * 3;
-                int qj = (i / 3) * 3;
+                int qj = (j / 3) * 3;
                 for(int k = qi; k < (qi + 3); k++) {
                     for(int l = qj; l < (qj + 3); l++) {
                         int posU = k*9+l;

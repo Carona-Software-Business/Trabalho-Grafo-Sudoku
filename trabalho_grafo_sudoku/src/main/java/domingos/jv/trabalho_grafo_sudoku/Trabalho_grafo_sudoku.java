@@ -1,5 +1,7 @@
 package domingos.jv.trabalho_grafo_sudoku;
 
+import java.awt.Toolkit;
+
 public class Trabalho_grafo_sudoku {
 
     public static void main(String[] args) {
@@ -7,11 +9,13 @@ public class Trabalho_grafo_sudoku {
         
         //System.out.println(tabuleiro.getGrafo());
         
-        Grafo resultado = tabuleiro.buscaLargura(2000000);
+        Grafo resultado = tabuleiro.buscaLargura(10000L);
         //Grafo resultado = tabuleiro.buscaProfundidade(10000);
         
         System.out.println("Resposta: ");
         if(resultado == null) System.out.println("Nao deu :(");
         else System.out.println(resultado.printarTabuleiro());
+        
+        Toolkit.getDefaultToolkit().beep();
     }
 }
