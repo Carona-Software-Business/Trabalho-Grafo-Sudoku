@@ -7,8 +7,8 @@ public class Trabalho_grafo_sudoku {
         
         //System.out.println(tabuleiro.getGrafo());
         
-        //Grafo resultado = tabuleiro.buscaLargura(10000);
-        Grafo resultado = tabuleiro.buscaProfundidade(10000);
+        Grafo resultado = tabuleiro.buscaLargura(2000000);
+        //Grafo resultado = tabuleiro.buscaProfundidade(10000);
         
         System.out.println("Resposta: ");
         if(resultado == null) System.out.println("Nao deu :(");

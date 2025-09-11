@@ -97,8 +97,8 @@ public class Tabuleiro {
         return true;
     }
     
-    public Grafo buscaLargura(int maxInteracao) {
-        for(int i = 1; i <= maxInteracao; i++) {
+    public Grafo buscaLargura(long maxInteracao) {
+        for(long i = 1L; i <= maxInteracao; i++) {
             Grafo grafoRetorno = new Grafo(tabuleiro);
             
             Vertice no = escolherVertice(grafoRetorno);
@@ -123,8 +123,8 @@ public class Tabuleiro {
         return null;
     }
     
-    public Grafo buscaProfundidade(int maxInteracao) {
-        for(int i = 1; i <= maxInteracao; i++){
+    public Grafo buscaProfundidade(long maxInteracao) {
+        for(long i = 1L; i <= maxInteracao; i++){
             Grafo grafoRetorno = new Grafo(tabuleiro);
             
             Vertice no = escolherVertice(grafoRetorno);
