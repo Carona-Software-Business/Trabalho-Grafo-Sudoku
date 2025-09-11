@@ -73,6 +73,22 @@ public class Grafo {
         
         return retorno;
     }
+    
+    public String printarTabuleiro() {
+        String retorno = "";
+        
+        int i = 1;
+        for(Vertice v : vertices) {
+            retorno += v.getNum();
+            
+            if(i % 9 == 0) retorno += "\n";
+            else retorno += " ";
+            
+            i++;
+        }
+        
+        return retorno;
+    }
 
     public ArrayList<Vertice> getVertices() {
         return vertices;

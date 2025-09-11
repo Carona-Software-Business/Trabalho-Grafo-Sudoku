@@ -9,8 +9,6 @@ import java.util.Random;
 
 public class Tabuleiro {
 
-    private String caminho = "inst1.txt";
-
     private int[][] tabuleiro = new int[9][9];
     
     private Grafo grafo;
@@ -18,7 +16,7 @@ public class Tabuleiro {
     private ArrayDeque<Vertice> fila;
     private Deque<Vertice> pilha;
 
-    public Tabuleiro() {
+    public Tabuleiro(String caminho) {
         try (BufferedReader br = new BufferedReader(new FileReader(caminho))) {
             String linha;
             int i = 0;
@@ -35,6 +33,7 @@ public class Tabuleiro {
             e.printStackTrace();
         }
 
+        System.out.println("Tabuleiro Inicial:");
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 System.out.print(tabuleiro[i][j] + " ");
@@ -86,8 +85,16 @@ public class Tabuleiro {
         return -1;
     }
     
-    private boolean ehValido() {
-        return false;
+    private boolean ehValido(Grafo g) {
+        //System.out.println("Testando: ");
+        //System.out.println(g.printarTabuleiro());
+        
+        for(Vertice v : g.getVertices()) {
+            for(Vertice u : v.getAdj()) {
+                if(v.getNum() == u.getNum()) return false;
+            }
+        }
+        return true;
     }
     
     public Grafo buscaLargura(int maxInteracao) {
@@ -108,7 +115,7 @@ public class Tabuleiro {
                 }
             }
             
-            if(ehValido()) return grafoRetorno;
+            if(ehValido(grafoRetorno)) return grafoRetorno;
             
             fila.clear();
         }
@@ -136,7 +143,7 @@ public class Tabuleiro {
                 }
             }
             
-            if(ehValido()) return grafoRetorno;
+            if(ehValido(grafoRetorno)) return grafoRetorno;
             
             pilha.clear();
         }
