@@ -105,11 +105,9 @@ public class Tabuleiro {
     }
     
     public Grafo buscaLargura(long maxInteracao) {
-        Grafo grafoRetorno;
+        Grafo grafoRetorno = new Grafo(tabuleiro);
         
         for(long i = 1L; i <= maxInteracao; i++) {
-            grafoRetorno = new Grafo(tabuleiro);
-            
             Vertice no = escolherVertice(grafoRetorno);
             fila.add(no);
             no.setNum(escolherNumero(no));
@@ -127,17 +125,16 @@ public class Tabuleiro {
             if(ehValido(grafoRetorno)) return grafoRetorno;
             
             fila.clear();
+            copiarGrafo(grafoRetorno);
         }
         
         return null;
     }
     
     public Grafo buscaProfundidade(long maxInteracao) {
-        Grafo grafoRetorno;
+        Grafo grafoRetorno = new Grafo(tabuleiro);
         
         for(long i = 1L; i <= maxInteracao; i++){
-            grafoRetorno = new Grafo(tabuleiro);
-            
             Vertice no = escolherVertice(grafoRetorno);
             no.setNum(escolherNumero(no));
             pilha.push(no);
@@ -157,7 +154,14 @@ public class Tabuleiro {
             if(ehValido(grafoRetorno)) return grafoRetorno;
             
             pilha.clear();
+            copiarGrafo(grafoRetorno);
         }
         return null;
+    }
+    
+    private void copiarGrafo(Grafo g) {
+        for(int i = 0; i < this.grafo.getVertices().size(); i++) {
+            g.getVertices().get(i).setNum(this.grafo.getVertices().get(i).getNum());
+        }
     }
 }
