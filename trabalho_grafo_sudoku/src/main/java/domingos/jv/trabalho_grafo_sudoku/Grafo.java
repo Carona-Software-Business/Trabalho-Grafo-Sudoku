@@ -4,26 +4,24 @@ import java.util.ArrayList;
 
 public class Grafo {
     private ArrayList<Vertice> vertices;
-    private int tempo;
 
     public Grafo(int[][] tabuleiro) {
-        this.tempo = 0;
         this.vertices = new ArrayList<>();
         criarGrafo(tabuleiro);
         criarArestas(tabuleiro);
     }
     
     private void criarGrafo(int[][] tabuleiro) {
-        for(int i = 0; i < 9; i++) {
-            for(int j = 0; j < 9; j++) {
+        for(int i = 0; i < tabuleiro.length; i++) {
+            for(int j = 0; j < tabuleiro[0].length; j++) {
                 vertices.add(new Vertice(tabuleiro[i][j]));
             }
         }
     }
     
     private void criarArestas(int[][] tabuleiro) {
-        for(int i = 0; i < 9; i++) {
-            for(int j = 0; j < 9; j++) {
+        for(int i = 0; i < tabuleiro.length; i++) {
+            for(int j = 0; j < tabuleiro[0].length; j++) {
                 int posV = i*9+j;
                 Vertice v = vertices.get(posV);
                 
