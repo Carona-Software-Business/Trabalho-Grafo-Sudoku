@@ -8,8 +8,9 @@ import java.util.Deque;
 import java.util.Random;
 
 public class Tabuleiro {
-
-    private int[][] tabuleiro = new int[9][9];
+    private int linhaColuna;
+    
+    private int[][] tabuleiro;
     
     private Grafo grafo;
     
@@ -20,22 +21,29 @@ public class Tabuleiro {
         try (BufferedReader br = new BufferedReader(new FileReader(caminho))) {
             String linha;
             int i = 0;
+            
+            linha = br.readLine();
+            String[] partes = linha.split(",");
+            linhaColuna = partes.length;
+            tabuleiro = new int[linhaColuna][linhaColuna];
+            
+            do {
+                partes = linha.trim().split(",");
 
-            while ((linha = br.readLine()) != null && i < 9) {
-                String[] partes = linha.trim().split(",");
-
-                for (int j = 0; j < 9 && j < partes.length; j++) {
+                for (int j = 0; j < linhaColuna && j < partes.length; j++) {
                     tabuleiro[i][j] = Integer.parseInt(partes[j].trim());
                 }
                 i++;
-            }
+                
+            } while((linha = br.readLine()) != null && i < linhaColuna);
+            
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         System.out.println("Tabuleiro Inicial:");
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
+        for (int i = 0; i < linhaColuna; i++) {
+            for (int j = 0; j < linhaColuna; j++) {
                 System.out.print(tabuleiro[i][j] + " ");
             }
             System.out.println();
