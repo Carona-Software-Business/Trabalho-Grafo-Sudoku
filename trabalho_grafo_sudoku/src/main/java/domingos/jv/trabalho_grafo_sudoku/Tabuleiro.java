@@ -63,20 +63,24 @@ public class Tabuleiro {
         Random rand = new Random();
         int numeroInt = rand.nextInt(g.getVertices().size());
         Vertice v = g.getVertices().get(numeroInt);
+        System.out.println("Vertice escolhido: " + v.getNum());
         if(v.getNum() == -1){
             return v;
         }else{
             for(Vertice u : v.getAdj()){
                 if(u.getNum() == -1){
+                    System.out.println("Vertice adj escolhido: " + u.getNum());
                     return u;
                 }
             }
             for(Vertice u: g.getVertices()){
                 if(u.getNum() == -1){
+                    System.out.println("Vertice matriz escolhido: " + u.getNum());
                     return u;
                 }
             }
         }
+        System.out.println("Erro null");
         return null;
     }
     
@@ -84,31 +88,39 @@ public class Tabuleiro {
         int num = 1;   
         boolean quebra = false;
         
-        while(num <= 9) {
+        while(num <= linhaColuna) {
             for(Vertice u : v.getAdj()) {
                 if(u.getNum() == num) {
+                    System.out.println("Numero com o mesmo numero, trocar!");
                     num++;
                     quebra = true;
                     break;
                 }
             }
-            if(!quebra)
+            if(!quebra){
+                System.out.println("Numero escolhido: " + num);
                 return num;
+            }
             
             quebra = false;
-        }       
+        }      
+        System.out.println("Erro escolher numero!");
         return -1;
     }
     
     private boolean ehValido(Grafo g) {
-        //System.out.println("Testando: ");
-        //System.out.println(g.printarTabuleiro());
+        System.out.println("Testando: ");
+        System.out.println(g.printarTabuleiro());
         
         for(Vertice v : g.getVertices()) {
             for(Vertice u : v.getAdj()) {
-                if(v.getNum() == u.getNum()) return false;
+                if(v.getNum() == u.getNum() || v.getNum() == -1) {
+                    System.out.println("Tabuleiro incorreto");
+                    return false;
+                }
             }
         }
+        System.out.println("Valido");
         return true;
     }
     
@@ -119,12 +131,16 @@ public class Tabuleiro {
             Vertice no = escolherVertice(grafoRetorno);
             fila.add(no);
             no.setNum(escolherNumero(no));
+            System.out.println(grafoRetorno.printarTabuleiro());
             
             while(!fila.isEmpty()) {
                 Vertice v = fila.remove();
+                System.out.println("Vertice removido: " + v.getNum());
                 for(Vertice w : v.getAdj()) {
                     if(w.getNum() == -1) {
+                        System.out.println("Vertice adj: " + w.getNum());
                         w.setNum(escolherNumero(w));
+                        System.out.println(grafoRetorno.printarTabuleiro());
                         fila.add(w);
                     }
                 }
