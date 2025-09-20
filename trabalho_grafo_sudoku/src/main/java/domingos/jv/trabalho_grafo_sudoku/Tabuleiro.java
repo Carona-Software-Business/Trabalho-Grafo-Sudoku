@@ -16,6 +16,8 @@ public class Tabuleiro {
     
     private ArrayDeque<Vertice> fila;
     private Deque<Vertice> pilha;
+    
+    private int pos;
 
     public Tabuleiro(String caminho) {
         try (BufferedReader br = new BufferedReader(new FileReader(caminho))) {
@@ -61,23 +63,36 @@ public class Tabuleiro {
     
     private Vertice escolherVertice(Grafo g) {
         Random rand = new Random();
-        int numeroInt = rand.nextInt(g.getVertices().size());
-        Vertice v = g.getVertices().get(numeroInt);
-        System.out.println("Vertice escolhido: " + v.getNum());
+        this.pos = rand.nextInt(g.getVertices().size());
+        Vertice v = g.getVertices().get(pos);
+        
         if(v.getNum() == -1){
+            System.out.println("Numero aleatório: " + pos);
+            System.out.println(g.printarTabuleiro(pos));
             return v;
         }else{
+            // Tenta pegar os adjacentes
+            int i = 0;
             for(Vertice u : v.getAdj()){
                 if(u.getNum() == -1){
-                    System.out.println("Vertice adj escolhido: " + u.getNum());
+                    this.pos = i;
+                    System.out.println("Adj escolhido: " + pos);
+                    System.out.println(g.printarTabuleiro(pos));
                     return u;
                 }
+                i++;
             }
+            
+            // Começa a pegar os vértices desde do início do grafo
+            i = 0;
             for(Vertice u: g.getVertices()){
                 if(u.getNum() == -1){
-                    System.out.println("Vertice matriz escolhido: " + u.getNum());
+                    this.pos = i;
+                    System.out.println("Vertice matriz escolhido: " + pos);
+                    System.out.println(g.printarTabuleiro(pos));
                     return u;
                 }
+                i++;
             }
         }
         System.out.println("Erro null");
@@ -131,7 +146,7 @@ public class Tabuleiro {
             Vertice no = escolherVertice(grafoRetorno);
             fila.add(no);
             no.setNum(escolherNumero(no));
-            System.out.println(grafoRetorno.printarTabuleiro());
+            System.out.println(grafoRetorno.printarTabuleiro(pos));
             
             while(!fila.isEmpty()) {
                 Vertice v = fila.remove();
@@ -146,8 +161,12 @@ public class Tabuleiro {
                 }
             }
             
-            if(ehValido(grafoRetorno)) return grafoRetorno;
+            if(ehValido(grafoRetorno)) {
+                System.out.println("DEU CERTO" + "\u001b[32m");
+                return grafoRetorno;
+            }
             
+            System.out.println("DEU ERRADO RESETANDO" + "\u001b[31m");
             fila.clear();
             copiarGrafo(grafoRetorno);
         }
