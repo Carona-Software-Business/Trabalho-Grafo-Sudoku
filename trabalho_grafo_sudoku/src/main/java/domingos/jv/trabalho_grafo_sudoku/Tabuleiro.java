@@ -16,6 +16,8 @@ public class Tabuleiro {
     
     private ArrayDeque<Vertice> fila;
     private Deque<Vertice> pilha;
+    
+    int pos;
 
     public Tabuleiro(String caminho) {
         try (BufferedReader br = new BufferedReader(new FileReader(caminho))) {
@@ -41,6 +43,7 @@ public class Tabuleiro {
             e.printStackTrace();
         }
 
+        /*
         System.out.println("Tabuleiro Inicial:");
         for (int i = 0; i < linhaColuna; i++) {
             for (int j = 0; j < linhaColuna; j++) {
@@ -48,6 +51,7 @@ public class Tabuleiro {
             }
             System.out.println();
         }
+        */
         
         this.grafo = new Grafo(tabuleiro);
         
@@ -63,25 +67,38 @@ public class Tabuleiro {
         Random rand = new Random();
         int numeroInt = rand.nextInt(g.getVertices().size());
         Vertice v = g.getVertices().get(numeroInt);
-        System.out.println("Vertice escolhido: " + v.getNum());
+        //System.out.println("Vertice escolhido: " + v.getNum());
         if(v.getNum() == -1){
             return v;
         }else{
             for(Vertice u : v.getAdj()){
                 if(u.getNum() == -1){
-                    System.out.println("Vertice adj escolhido: " + u.getNum());
+                    //System.out.println("Vertice adj escolhido: " + u.getNum());
                     return u;
                 }
             }
             for(Vertice u: g.getVertices()){
                 if(u.getNum() == -1){
-                    System.out.println("Vertice matriz escolhido: " + u.getNum());
+                    //System.out.println("Vertice matriz escolhido: " + u.getNum());
                     return u;
                 }
             }
         }
-        System.out.println("Erro null");
+        //System.out.println("Erro null");
         return null;
+    }
+    
+    private Vertice escolherVerticeRandom(Grafo g) {
+        Vertice v;
+        
+        do {
+            pos = new Random().nextInt(g.getVertices().size());
+            
+            v = g.getVertices().get(pos);
+            
+        } while(v.getNum() != -1);
+        
+        return v;
     }
     
     private int escolherNumero(Vertice v) {
@@ -91,36 +108,36 @@ public class Tabuleiro {
         while(num <= linhaColuna) {
             for(Vertice u : v.getAdj()) {
                 if(u.getNum() == num) {
-                    System.out.println("Numero com o mesmo numero, trocar!");
+                    //System.out.println("Numero " + num + " ja tem, trocar!");
                     num++;
                     quebra = true;
                     break;
                 }
             }
             if(!quebra){
-                System.out.println("Numero escolhido: " + num);
+                //System.out.println("Numero escolhido: " + num);
                 return num;
             }
             
             quebra = false;
         }      
-        System.out.println("Erro escolher numero!");
+        //System.out.println("Erro escolher numero!");
         return -1;
     }
     
     private boolean ehValido(Grafo g) {
-        System.out.println("Testando: ");
-        System.out.println(g.printarTabuleiro());
+        //System.out.println("Testando: ");
+        //System.out.println(g.printarTabuleiro());
         
         for(Vertice v : g.getVertices()) {
             for(Vertice u : v.getAdj()) {
                 if(v.getNum() == u.getNum() || v.getNum() == -1) {
-                    System.out.println("Tabuleiro incorreto");
+                    //System.out.println("Tabuleiro incorreto");
                     return false;
                 }
             }
         }
-        System.out.println("Valido");
+        //System.out.println("Valido");
         return true;
     }
     
@@ -128,26 +145,48 @@ public class Tabuleiro {
         Grafo grafoRetorno = new Grafo(tabuleiro);
         
         for(long i = 1L; i <= maxInteracao; i++) {
-            Vertice no = escolherVertice(grafoRetorno);
+            Vertice no = escolherVerticeRandom(grafoRetorno);
             fila.add(no);
+            
+            //System.out.println("Vertice escolhido: " + no.getNum());
+            //System.out.println(grafoRetorno.printarTabuleiro(pos));
+            
+            //System.out.println("Fila:");
+            /*
+            for(Vertice v : fila) {
+                System.out.print(v.getNum() + " - ");
+            }
+            */
+            
             no.setNum(escolherNumero(no));
-            System.out.println(grafoRetorno.printarTabuleiro());
+            //System.out.println(grafoRetorno.printarTabuleiro(pos));
             
             while(!fila.isEmpty()) {
                 Vertice v = fila.remove();
-                System.out.println("Vertice removido: " + v.getNum());
+                //System.out.println("Vertice removido: " + v.getNum());
+                
+                //System.out.println("Fila:");
+                /*
+                for(Vertice u : fila) {
+                    System.out.print(u.getNum() + " - ");
+                }
+                */
+                
                 for(Vertice w : v.getAdj()) {
                     if(w.getNum() == -1) {
-                        System.out.println("Vertice adj: " + w.getNum());
+                        //System.out.println("Vertice adj: " + w.getNum());
                         w.setNum(escolherNumero(w));
-                        System.out.println(grafoRetorno.printarTabuleiro());
-                        fila.add(w);
+                        //System.out.println(grafoRetorno.printarTabuleiro());
+                        
+                        if(w.getNum() != -1)
+                            fila.add(w);
                     }
                 }
             }
             
             if(ehValido(grafoRetorno)) return grafoRetorno;
             
+            //System.out.println("Nao foi possivel resolver");
             fila.clear();
             copiarGrafo(grafoRetorno);
         }

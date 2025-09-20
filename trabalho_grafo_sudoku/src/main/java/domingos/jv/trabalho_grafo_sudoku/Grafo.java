@@ -91,6 +91,25 @@ public class Grafo {
         
         return retorno;
     }
+    
+    public String printarTabuleiro(int pos) {
+        String retorno = "";
+        
+        int i = 1;
+        for(Vertice v : vertices) {
+            if((i-1) == pos)
+                retorno += "-> " + v.getNum() + " <-";
+            else
+                retorno += v.getNum();
+            
+            if(i % tamanho == 0) retorno += "\n";
+            else retorno += " ";
+            
+            i++;
+        }
+        
+        return retorno;
+    }
 
     public ArrayList<Vertice> getVertices() {
         return vertices;
