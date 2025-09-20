@@ -115,13 +115,13 @@ public class Tabuleiro {
                 }
             }
             if(!quebra){
-                //System.out.println("Numero escolhido: " + num);
+                System.out.println("Numero escolhido: " + num);
                 return num;
             }
             
             quebra = false;
         }      
-        //System.out.println("Erro escolher numero!");
+        System.out.println("Erro escolher numero!");
         return -1;
     }
     
@@ -145,7 +145,7 @@ public class Tabuleiro {
         Grafo grafoRetorno = new Grafo(tabuleiro);
         
         for(long i = 1L; i <= maxInteracao; i++) {
-            Vertice no = escolherVerticeRandom(grafoRetorno);
+            Vertice no = escolherVertice(grafoRetorno);
             fila.add(no);
             
             //System.out.println("Vertice escolhido: " + no.getNum());
@@ -198,18 +198,47 @@ public class Tabuleiro {
         Grafo grafoRetorno = new Grafo(tabuleiro);
         
         for(long i = 1L; i <= maxInteracao; i++){
-            Vertice no = escolherVertice(grafoRetorno);
+            Vertice no = escolherVerticeRandom(grafoRetorno);
+            
+            System.out.println("Vertice escolhido: " + no.getNum());
+            System.out.println(grafoRetorno.printarTabuleiro(pos));
+            
             no.setNum(escolherNumero(no));
+            
+            System.out.println(grafoRetorno.printarTabuleiro(pos));
+            
             pilha.push(no);
+            
+            System.out.println("Pilha:");
+            for(Vertice v : pilha) {
+                System.out.print(v.getNum() + " - ");
+            }
             
             while(!pilha.isEmpty()){
                 Vertice v = pilha.pop();
                 
+                System.out.println("Vertice removido: " + v.getNum());
+                
+                System.out.println("Pilha:");
+                for(Vertice u : pilha) {
+                    System.out.print(u.getNum() + " - ");
+                }
+                
                 for(Vertice w : v.getAdj()){
                     if (w.getNum() == -1){
+                       System.out.println("Vertice adj: " + w.getNum());
                        w.setNum(escolherNumero(w));
+                       System.out.println(grafoRetorno.printarTabuleiro());
+                       
                        pilha.push(v);
-                       pilha.push(w);                    
+                       pilha.push(w);  
+                       
+                        System.out.println("Pilha:");
+                        for(Vertice u : pilha) {
+                            System.out.print(u.getNum() + " - ");
+                        }
+                       
+                       break;
                     } 
                 }
             }
