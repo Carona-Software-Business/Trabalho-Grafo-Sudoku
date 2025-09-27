@@ -166,6 +166,7 @@ public class Tabuleiro {
             preecherSudokuLargura();
 
             if (ehValido(grafoRetorno)) {
+                System.out.println("Resolvido na tentativa " + i);
                 return grafoRetorno;
             } 
 
@@ -202,50 +203,14 @@ public class Tabuleiro {
         for (long i = 1L; i <= maxInteracao; i++) {
             Vertice no = escolherVerticeRandom(grafoRetorno);
 
-            System.out.println("Vertice escolhido: " + no.getNum());
-            System.out.println(grafoRetorno.printarTabuleiro(pos));
-
             no.setNum(escolherNumero(no));
-
-            System.out.println(grafoRetorno.printarTabuleiro(pos));
 
             pilha.push(no);
 
-            System.out.println("Pilha:");
-            for (Vertice v : pilha) {
-                System.out.print(v.getNum() + " - ");
-            }
-
-            while (!pilha.isEmpty()) {
-                Vertice v = pilha.pop();
-
-                System.out.println("Vertice removido: " + v.getNum());
-
-                System.out.println("Pilha:");
-                for (Vertice u : pilha) {
-                    System.out.print(u.getNum() + " - ");
-                }
-
-                for (Vertice w : v.getAdj()) {
-                    if (w.getNum() == -1) {
-                        System.out.println("Vertice adj: " + w.getNum());
-                        w.setNum(escolherNumero(w));
-                        System.out.println(grafoRetorno.printarTabuleiro());
-
-                        pilha.push(v);
-                        pilha.push(w);
-
-                        System.out.println("Pilha:");
-                        for (Vertice u : pilha) {
-                            System.out.print(u.getNum() + " - ");
-                        }
-
-                        break;
-                    }
-                }
-            }
+            preencherSudokuProfundo();
 
             if (ehValido(grafoRetorno)) {
+                System.out.println("Resolvido na tentativa " + i);
                 return grafoRetorno;
             }
 
@@ -253,6 +218,28 @@ public class Tabuleiro {
             copiarGrafo(grafoRetorno);
         }
         return null;
+    }
+    
+    private void preencherSudokuProfundo() {
+        while (!pilha.isEmpty()) {
+            Vertice v = pilha.pop();
+
+            for (Vertice w : v.getAdj()) {
+                if (w.getNum() == -1) {
+                    int num = escolherNumero(w);
+                    
+                    if(num == -1)
+                        return;
+                    
+                    w.setNum(escolherNumero(w));
+
+                    pilha.push(v);
+                    pilha.push(w);
+
+                    break;
+                }
+            }
+        }
     }
 
     private void copiarGrafo(Grafo g) {
