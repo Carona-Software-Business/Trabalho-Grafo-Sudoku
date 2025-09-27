@@ -3,32 +3,38 @@ package domingos.jv.trabalho_grafo_sudoku;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Deque;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 public class Tabuleiro {
+
     private int linhaColuna;
-    
+
     private int[][] tabuleiro;
-    
+
     private Grafo grafo;
-    
+
     private ArrayDeque<Vertice> fila;
     private Deque<Vertice> pilha;
-    
+
     int pos;
 
     public Tabuleiro(String caminho) {
         try (BufferedReader br = new BufferedReader(new FileReader(caminho))) {
             String linha;
             int i = 0;
-            
+
             linha = br.readLine();
             String[] partes = linha.split(",");
             linhaColuna = partes.length;
             tabuleiro = new int[linhaColuna][linhaColuna];
-            
+
             do {
                 partes = linha.trim().split(",");
 
@@ -36,9 +42,9 @@ public class Tabuleiro {
                     tabuleiro[i][j] = Integer.parseInt(partes[j].trim());
                 }
                 i++;
-                
-            } while((linha = br.readLine()) != null && i < linhaColuna);
-            
+
+            } while ((linha = br.readLine()) != null && i < linhaColuna);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -51,10 +57,9 @@ public class Tabuleiro {
             }
             System.out.println();
         }
-        */
-        
+         */
         this.grafo = new Grafo(tabuleiro);
-        
+
         fila = new ArrayDeque<>();
         this.pilha = new ArrayDeque<>();
     }
@@ -62,23 +67,23 @@ public class Tabuleiro {
     public Grafo getGrafo() {
         return grafo;
     }
-    
+
     private Vertice escolherVertice(Grafo g) {
         Random rand = new Random();
         int numeroInt = rand.nextInt(g.getVertices().size());
         Vertice v = g.getVertices().get(numeroInt);
         //System.out.println("Vertice escolhido: " + v.getNum());
-        if(v.getNum() == -1){
+        if (v.getNum() == -1) {
             return v;
-        }else{
-            for(Vertice u : v.getAdj()){
-                if(u.getNum() == -1){
+        } else {
+            for (Vertice u : v.getAdj()) {
+                if (u.getNum() == -1) {
                     //System.out.println("Vertice adj escolhido: " + u.getNum());
                     return u;
                 }
             }
-            for(Vertice u: g.getVertices()){
-                if(u.getNum() == -1){
+            for (Vertice u : g.getVertices()) {
+                if (u.getNum() == -1) {
                     //System.out.println("Vertice matriz escolhido: " + u.getNum());
                     return u;
                 }
@@ -87,51 +92,57 @@ public class Tabuleiro {
         //System.out.println("Erro null");
         return null;
     }
-    
+
     private Vertice escolherVerticeRandom(Grafo g) {
         Vertice v;
-        
+
         do {
             pos = new Random().nextInt(g.getVertices().size());
-            
+
             v = g.getVertices().get(pos);
-            
-        } while(v.getNum() != -1);
-        
+
+        } while (v.getNum() != -1);
+
         return v;
     }
-    
+
     private int escolherNumero(Vertice v) {
-        int num = 1;   
-        boolean quebra = false;
-        
-        while(num <= linhaColuna) {
-            for(Vertice u : v.getAdj()) {
-                if(u.getNum() == num) {
-                    //System.out.println("Numero " + num + " ja tem, trocar!");
-                    num++;
-                    quebra = true;
-                    break;
-                }
+        Set<Integer> numeros = new HashSet<>();
+
+        for (Vertice u : v.getAdj()) {
+            if (u.getNum() != -1) {
+                numeros.add(u.getNum());
             }
-            if(!quebra){
-                System.out.println("Numero escolhido: " + num);
-                return num;
+        }
+
+        List<Integer> numerosEsc = new ArrayList<>();
+        int num = 1;
+        while (num <= linhaColuna) {
+            if (!numeros.contains(num)) {
+                numerosEsc.add(num);
             }
             
-            quebra = false;
-        }      
-        System.out.println("Erro escolher numero!");
-        return -1;
+            num++;
+        }
+        
+        if(numerosEsc.isEmpty())
+            return -1;
+
+        return numerosEsc.get(new Random().nextInt(numerosEsc.size()));
+
     }
-    
+
     private boolean ehValido(Grafo g) {
         //System.out.println("Testando: ");
         //System.out.println(g.printarTabuleiro());
-        
-        for(Vertice v : g.getVertices()) {
-            for(Vertice u : v.getAdj()) {
-                if(v.getNum() == u.getNum() || v.getNum() == -1) {
+
+        if (g == null) {
+            return false;
+        }
+
+        for (Vertice v : g.getVertices()) {
+            for (Vertice u : v.getAdj()) {
+                if (v.getNum() == u.getNum() || v.getNum() == -1) {
                     //System.out.println("Tabuleiro incorreto");
                     return false;
                 }
@@ -140,119 +151,112 @@ public class Tabuleiro {
         //System.out.println("Valido");
         return true;
     }
-    
+
     public Grafo buscaLargura(long maxInteracao) {
         Grafo grafoRetorno = new Grafo(tabuleiro);
-        
-        for(long i = 1L; i <= maxInteracao; i++) {
-            Vertice no = escolherVertice(grafoRetorno);
+
+        for (long i = 1L; i <= maxInteracao; i++) {
+            //System.out.println("Tentativa " + i);
+            
+            Vertice no = escolherVerticeRandom(grafoRetorno);
             fila.add(no);
-            
-            //System.out.println("Vertice escolhido: " + no.getNum());
-            //System.out.println(grafoRetorno.printarTabuleiro(pos));
-            
-            //System.out.println("Fila:");
-            /*
-            for(Vertice v : fila) {
-                System.out.print(v.getNum() + " - ");
-            }
-            */
-            
+        
             no.setNum(escolherNumero(no));
-            //System.out.println(grafoRetorno.printarTabuleiro(pos));
             
-            while(!fila.isEmpty()) {
-                Vertice v = fila.remove();
-                //System.out.println("Vertice removido: " + v.getNum());
-                
-                //System.out.println("Fila:");
-                /*
-                for(Vertice u : fila) {
-                    System.out.print(u.getNum() + " - ");
-                }
-                */
-                
-                for(Vertice w : v.getAdj()) {
-                    if(w.getNum() == -1) {
-                        //System.out.println("Vertice adj: " + w.getNum());
-                        w.setNum(escolherNumero(w));
-                        //System.out.println(grafoRetorno.printarTabuleiro());
-                        
-                        if(w.getNum() != -1)
-                            fila.add(w);
-                    }
-                }
-            }
-            
-            if(ehValido(grafoRetorno)) return grafoRetorno;
-            
-            //System.out.println("Nao foi possivel resolver");
+            preecherSudokuLargura();
+
+            if (ehValido(grafoRetorno)) {
+                return grafoRetorno;
+            } 
+
+            //System.out.println("Nao deu, tentando de novo...");
             fila.clear();
             copiarGrafo(grafoRetorno);
         }
         
         return null;
     }
-    
+
+    private void preecherSudokuLargura() {
+        while (!fila.isEmpty()) {
+            Vertice v = fila.remove();
+
+            for (Vertice w : v.getAdj()) {
+                if (w.getNum() == -1) {
+                    int num = escolherNumero(w);
+                    
+                    if (num == -1) {
+                        return;
+                    }
+                    
+                    w.setNum(escolherNumero(w));
+                    fila.add(w);
+                }
+            }
+        }
+    }
+
     public Grafo buscaProfundidade(long maxInteracao) {
         Grafo grafoRetorno = new Grafo(tabuleiro);
-        
-        for(long i = 1L; i <= maxInteracao; i++){
+
+        for (long i = 1L; i <= maxInteracao; i++) {
             Vertice no = escolherVerticeRandom(grafoRetorno);
-            
+
             System.out.println("Vertice escolhido: " + no.getNum());
             System.out.println(grafoRetorno.printarTabuleiro(pos));
-            
+
             no.setNum(escolherNumero(no));
-            
+
             System.out.println(grafoRetorno.printarTabuleiro(pos));
-            
+
             pilha.push(no);
-            
+
             System.out.println("Pilha:");
-            for(Vertice v : pilha) {
+            for (Vertice v : pilha) {
                 System.out.print(v.getNum() + " - ");
             }
-            
-            while(!pilha.isEmpty()){
+
+            while (!pilha.isEmpty()) {
                 Vertice v = pilha.pop();
-                
+
                 System.out.println("Vertice removido: " + v.getNum());
-                
+
                 System.out.println("Pilha:");
-                for(Vertice u : pilha) {
+                for (Vertice u : pilha) {
                     System.out.print(u.getNum() + " - ");
                 }
-                
-                for(Vertice w : v.getAdj()){
-                    if (w.getNum() == -1){
-                       System.out.println("Vertice adj: " + w.getNum());
-                       w.setNum(escolherNumero(w));
-                       System.out.println(grafoRetorno.printarTabuleiro());
-                       
-                       pilha.push(v);
-                       pilha.push(w);  
-                       
+
+                for (Vertice w : v.getAdj()) {
+                    if (w.getNum() == -1) {
+                        System.out.println("Vertice adj: " + w.getNum());
+                        w.setNum(escolherNumero(w));
+                        System.out.println(grafoRetorno.printarTabuleiro());
+
+                        pilha.push(v);
+                        pilha.push(w);
+
                         System.out.println("Pilha:");
-                        for(Vertice u : pilha) {
+                        for (Vertice u : pilha) {
                             System.out.print(u.getNum() + " - ");
                         }
-                       
-                       break;
-                    } 
+
+                        break;
+                    }
                 }
             }
-            
-            if(ehValido(grafoRetorno)) return grafoRetorno;
-            
+
+            if (ehValido(grafoRetorno)) {
+                return grafoRetorno;
+            }
+
             pilha.clear();
             copiarGrafo(grafoRetorno);
         }
         return null;
     }
-    
+
     private void copiarGrafo(Grafo g) {
-        for(int i = 0; i < this.grafo.getVertices().size(); i++) {
+        for (int i = 0; i < this.grafo.getVertices().size(); i++) {
             g.getVertices().get(i).setNum(this.grafo.getVertices().get(i).getNum());
         }
     }
