@@ -5,6 +5,8 @@ import java.awt.Toolkit;
 public class Trabalho_grafo_sudoku {
 
     public static void main(String[] args) {
+        // João Vitor C. Domingos e Kauan Gomes
+        
         Tabuleiro tabuleiro = new Tabuleiro("dificil.txt");
         
         Grafo resultadoL = tabuleiro.buscaLargura(100000000L);
