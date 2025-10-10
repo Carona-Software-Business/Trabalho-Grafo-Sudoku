@@ -7,7 +7,7 @@ public class Trabalho_grafo_sudoku {
     public static void main(String[] args) {
         // João Vitor C. Domingos e Kauan Gomes
         
-        Tabuleiro tabuleiro = new Tabuleiro("dificil.txt");
+        Tabuleiro tabuleiro = new Tabuleiro("inst7.txt");
         
         Grafo resultadoL = tabuleiro.buscaLargura(100000000L);
         Grafo resultadoP = tabuleiro.buscaProfundidade(100000000L);
